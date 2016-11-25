@@ -6,12 +6,15 @@ MuseScore {
     menuPath: "Plugins.Comments"
     version: "2.0"
     description: qsTr("This plugin adds comments to your score")
-    //requiresScore: false
+    //requiresScore: true // needs MuseScore > 2.0.3
     pluginType: "dialog"
 
     id:window
     width:  400; height: 300;
-    onRun: {}
+    onRun: {
+        if (!curScore)
+            Qt.quit();
+        }
 
     Label {
         id: textLabel
@@ -39,11 +42,14 @@ MuseScore {
         focus: true
         wrapMode: TextEdit.WrapAnywhere
         textFormat: TextEdit.PlainText
-        Keys.onPressed :{
-            if (event.key == Qt.Key_Escape)
+        Keys.onPressed: {
+            if (!curScore || event.key == Qt.Key_Escape)
                 Qt.quit()
             curScore.setMetaTag("comments", text)
-        }
-        Component.onCompleted: { text = curScore.metaTag("comments")}
+            }
+        Component.onCompleted: {
+            if (curScore)
+                text = curScore.metaTag("comments")
+            }
         }
     }
