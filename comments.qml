@@ -36,9 +36,14 @@ MuseScore {
         anchors.rightMargin: 10
         width:parent.width
         height:400
+        focus: true
         wrapMode: TextEdit.WrapAnywhere
         textFormat: TextEdit.PlainText
-        Keys.onPressed :{ curScore.setMetaTag("comments", text) }
+        Keys.onPressed :{
+            if (event.key == Qt.Key_Escape)
+                Qt.quit()
+            curScore.setMetaTag("comments", text)
+        }
         Component.onCompleted: { text = curScore.metaTag("comments")}
         }
     }
