@@ -25,8 +25,10 @@ MuseScore {
         width : 400;
         height : 300;
         visible : false
+	//SL Added variable to hold the score current to this plugin
         property var score : curScore
-		title : {"MuseScore : " + curScore.name;}
+	//SL Added title so it is obvious which score the text will be added to
+        title : {"MuseScore : " + curScore.name;}
 
         Settings {
             id : settings
@@ -47,7 +49,6 @@ MuseScore {
 
         TextArea {
             id : abcText
-
             anchors.top : textLabel.bottom
             anchors.left : window.left
             anchors.right : window.right
@@ -61,6 +62,7 @@ MuseScore {
             focus : true
             wrapMode : TextEdit.WrapAnywhere
             textFormat : TextEdit.PlainText
+	    //SL Changed from onPressed as in some circumstances the last key pressed was lost.
             Keys.onReleased : {
                 if (event.key == Qt.Key_Escape) {
                     window.close();
@@ -98,11 +100,15 @@ MuseScore {
             }
             Qt.quit()
         }
+	//Added onActiveChanged so we can test if the score has been changed.
         onActiveChanged : {
             if (active) {
                 if (score != curScore) {
-					window.title = "MuseScore : " + curScore.name;
+		    //Add new scorename to title
+                    window.title = "MuseScore : " + curScore.name;
+		    //Update the new score text
                     abcText.text = curScore.metaTag("comments");
+		    //Now working on the new score
                     score = curScore;
                 }
             }
