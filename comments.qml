@@ -8,7 +8,7 @@ MuseScore {
     menuPath : "Plugins.Comments"
     version : "2.0"
     description : qsTr("This plugin adds comments to your score")
-    //Removed plugin type as it's not really a dialog anymore and is causing two windows to be present on MAC
+    //SL Removed plugin type as it's not really a dialog anymore and is causing two windows to be present on MAC
     //pluginType : "Dialog"
     //requiresScore: true // needs MuseScore > 2.0.3
 
