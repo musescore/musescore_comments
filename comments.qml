@@ -8,7 +8,7 @@ MuseScore {
     menuPath : "Plugins.Comments"
     version : "2.0"
     description : qsTr("This plugin adds comments to your score")
-    pluginType : "dialog"
+    pluginType : "Dialog"
     //requiresScore: true // needs MuseScore > 2.0.3
 
 
@@ -24,10 +24,12 @@ MuseScore {
         id : window
         width : 400;
         height : 300;
-        visible : false;
-		
+        visible : false
+        property var score : curScore
+        title : {"MuseScore : " + curScore.name;}
+
         Settings {
-            id: settings
+            id : settings
             category : "pluginSettings"
             property string metrics : ""
         }
@@ -45,6 +47,7 @@ MuseScore {
 
         TextArea {
             id : abcText
+
             anchors.top : textLabel.bottom
             anchors.left : window.left
             anchors.right : window.right
@@ -58,11 +61,11 @@ MuseScore {
             focus : true
             wrapMode : TextEdit.WrapAnywhere
             textFormat : TextEdit.PlainText
-            Keys.onPressed : {
+            Keys.onReleased : {
                 if (event.key == Qt.Key_Escape) {
                     window.close();
                 } else {
-                   curScore.setMetaTag("comments", abcText.text)
+                    curScore.setMetaTag("comments", abcText.text)
                 }
             }
             Component.onCompleted : {
@@ -90,9 +93,19 @@ MuseScore {
                     width : window.width,
                     height : window.height
                 }
-                settings.metrics =  JSON.stringify(metrics);
+                curScore.setMetaTag("comments", abcText.text)
+                settings.metrics = JSON.stringify(metrics);
             }
             Qt.quit()
+        }
+        onActiveChanged : {
+            if (active) {
+                if (score != curScore) {
+                    window.title = "MuseScore : " + curScore.name;
+                    abcText.text = curScore.metaTag("comments");
+                    score = curScore;
+                }
+            }
         }
     }
 }
