@@ -61,6 +61,8 @@ MuseScore {
             Keys.onPressed : {
                 if (event.key == Qt.Key_Escape) {
                     window.close();
+                } else {
+                   curScore.setMetaTag("comments", abcText.text)
                 }
             }
             Component.onCompleted : {
