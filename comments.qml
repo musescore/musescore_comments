@@ -8,7 +8,7 @@ MuseScore {
     menuPath : "Plugins.Comments"
     version : "2.0"
     description : qsTr("This plugin adds comments to your score")
-    pluginType : "Dialog"
+    //pluginType : "Dialog"
     //requiresScore: true // needs MuseScore > 2.0.3
 
 
@@ -26,7 +26,7 @@ MuseScore {
         height : 300;
         visible : false
         property var score : curScore
-        title : {"MuseScore : " + curScore.name;}
+		title : {"MuseScore : " + curScore.name;}
 
         Settings {
             id : settings
@@ -101,7 +101,7 @@ MuseScore {
         onActiveChanged : {
             if (active) {
                 if (score != curScore) {
-                    window.title = "MuseScore : " + curScore.name;
+					window.title = "MuseScore : " + curScore.name;
                     abcText.text = curScore.metaTag("comments");
                     score = curScore;
                 }
