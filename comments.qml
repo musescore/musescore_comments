@@ -61,6 +61,8 @@ MuseScore {
             Keys.onPressed : {
                 if (event.key == Qt.Key_Escape) {
                     window.close();
+                } else {
+                   curScore.setMetaTag("comments", abcText.text)
                 }
             }
             Component.onCompleted : {
@@ -88,7 +90,6 @@ MuseScore {
                     width : window.width,
                     height : window.height
                 }
-                curScore.setMetaTag("comments", abcText.text)
                 settings.metrics =  JSON.stringify(metrics);
             }
             Qt.quit()
