@@ -90,7 +90,6 @@ MuseScore {
                     width : window.width,
                     height : window.height
                 }
-                curScore.setMetaTag("comments", abcText.text)
                 settings.metrics =  JSON.stringify(metrics);
             }
             Qt.quit()
