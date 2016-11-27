@@ -60,18 +60,7 @@ MuseScore {
             textFormat : TextEdit.PlainText
             Keys.onPressed : {
                 if (event.key == Qt.Key_Escape) {
-                    if (curScore) {
-                        curScore.setMetaTag("comments", text)
-                        var metrics = {
-                            x : window.x,
-                            y : window.y,
-                            width : window.width,
-                            height : window.height
-                        }
-                        settings.metrics =  JSON.stringify(metrics);
-                    }
                     window.close();
-                    Qt.quit()
                 }
             }
             Component.onCompleted : {
