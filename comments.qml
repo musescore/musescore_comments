@@ -8,7 +8,8 @@ MuseScore {
     menuPath : "Plugins.Comments"
     version : "2.0"
     description : qsTr("This plugin adds comments to your score")
-    pluginType : "dialog"
+    //SL Removed plugin type as it's not really a dialog anymore and is causing two windows to be present on MAC
+    //pluginType : "Dialog"
     //requiresScore: true // needs MuseScore > 2.0.3
 
 
@@ -24,10 +25,14 @@ MuseScore {
         id : window
         width : 400;
         height : 300;
-        visible : false;
-		
+        visible : false
+	//SL Added variable to hold the score current to this plugin
+        property var score : curScore
+	//SL Added title so it is obvious which score the text will be added to
+        title : {"MuseScore : " + curScore.name;}
+
         Settings {
-            id: settings
+            id : settings
             category : "pluginSettings"
             property string metrics : ""
         }
@@ -58,11 +63,12 @@ MuseScore {
             focus : true
             wrapMode : TextEdit.WrapAnywhere
             textFormat : TextEdit.PlainText
-            Keys.onPressed : {
+	    //SL Changed from onPressed as in some circumstances the last key pressed was lost.
+            Keys.onReleased : {
                 if (event.key == Qt.Key_Escape) {
                     window.close();
                 } else {
-                   curScore.setMetaTag("comments", abcText.text)
+                    curScore.setMetaTag("comments", abcText.text)
                 }
             }
             Component.onCompleted : {
@@ -90,9 +96,23 @@ MuseScore {
                     width : window.width,
                     height : window.height
                 }
-                settings.metrics =  JSON.stringify(metrics);
+                curScore.setMetaTag("comments", abcText.text)
+                settings.metrics = JSON.stringify(metrics);
             }
             Qt.quit()
+        }
+	//Added onActiveChanged so we can test if the score has been changed.
+        onActiveChanged : {
+            if (active) {
+                if (score != curScore) {
+		    //Add new scorename to title
+                    window.title = "MuseScore : " + curScore.name;
+		    //Update the new score text
+                    abcText.text = curScore.metaTag("comments");
+		    //Now working on the new score
+                    score = curScore;
+                }
+            }
         }
     }
 }
