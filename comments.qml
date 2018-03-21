@@ -14,10 +14,10 @@ MuseScore {
 
 
     onRun : {
-        if(!curScore){
+        if (!curScore) {
             Qt.quit();
         } else{
-            window.visible = true;
+            window.visible = true
         }
     }
 
@@ -26,13 +26,13 @@ MuseScore {
         width : 400;
         minimumWidth : textLabel.width + 20
         minimumHeight : textLabel.height + 100
-        height : 300;
+        height : 300
         visible : false
 	//SL Added variable to hold the score current to this plugin
         property var score : curScore
 	//SL Added title so it is obvious which score the text will be added to
         title : {"MuseScore : " + curScore.name}
-        color: "silver"
+        color : "silver"
 
         Settings {
             id : settings
@@ -54,24 +54,24 @@ MuseScore {
             id: textAreaRect
 
             anchors.top : textLabel.bottom
-            anchors.left: window.left
+            anchors.left : window.left
             anchors.right : window.right
             anchors.bottom : window.bottom
             
-            anchors.fill: parent
+            anchors.fill : parent
 
             anchors.leftMargin : 5
             anchors.rightMargin : 5
             anchors.topMargin : textLabel.height + 5
             anchors.bottomMargin : 5
             
-            color: "lightgray"
-            radius: 2
+            color : "lightgray"
+            radius : 2
 
             TextArea {
                   id : abcText
-                  anchors.centerIn: parent
-                  anchors.fill: parent
+                  anchors.centerIn : parent
+                  anchors.fill : parent
                                     
                   font.pointSize : 12
                   backgroundVisible : false
