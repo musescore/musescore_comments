@@ -16,12 +16,12 @@ MuseScore {
     onRun : {
         if (!curScore) {
             Qt.quit();
-        } else{
+        } else {
             window.visible = true
         }
     }
 
-    Window{
+    Window {
         id : window
         width : 400;
         minimumWidth : textLabel.width + 20
@@ -47,7 +47,6 @@ MuseScore {
             text : qsTr("Add your comments")
             font.pointSize : 20
             anchors.horizontalCenter : parent.horizontalCenter
-
         }
 
         Rectangle {
