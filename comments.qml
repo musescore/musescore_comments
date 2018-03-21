@@ -17,19 +17,22 @@ MuseScore {
         if (!curScore) {
             Qt.quit();
         } else {
-            window.visible = true;
+            window.visible = true
         }
     }
 
     Window {
         id : window
         width : 400;
-        height : 300;
+        minimumWidth : textLabel.width + 20
+        minimumHeight : textLabel.height + 100
+        height : 300
         visible : false
 	//SL Added variable to hold the score current to this plugin
         property var score : curScore
 	//SL Added title so it is obvious which score the text will be added to
-        title : {"MuseScore : " + curScore.name;}
+        title : {"MuseScore : " + curScore.name}
+        color : "silver"
 
         Settings {
             id : settings
@@ -40,79 +43,92 @@ MuseScore {
         Label {
             id : textLabel
             wrapMode : Text.WordWrap
+
             text : qsTr("Add your comments")
-            font.pointSize : 12
-            anchors.left : window.left
-            anchors.top : window.top
-            anchors.leftMargin : 10
-            anchors.topMargin : 10
+            font.pointSize : 20
+            anchors.horizontalCenter : parent.horizontalCenter
         }
 
-        TextArea {
-            id : abcText
+        Rectangle {
+            id: textAreaRect
+
             anchors.top : textLabel.bottom
             anchors.left : window.left
             anchors.right : window.right
             anchors.bottom : window.bottom
-            anchors.topMargin : 10
-            anchors.bottomMargin : 10
-            anchors.leftMargin : 10
-            anchors.rightMargin : 10
-            width : parent.width
-            height : 400
-            focus : true
-            wrapMode : TextEdit.WrapAnywhere
-            textFormat : TextEdit.PlainText
-	    //SL Changed from onPressed as in some circumstances the last key pressed was lost.
-            Keys.onReleased : {
-                if (event.key == Qt.Key_Escape) {
-                    window.close();
-                } else {
-                    curScore.setMetaTag("comments", abcText.text)
-                }
+            
+            anchors.fill : parent
+
+            anchors.leftMargin : 5
+            anchors.rightMargin : 5
+            anchors.topMargin : textLabel.height + 5
+            anchors.bottomMargin : 5
+            
+            color : "lightgray"
+            radius : 2
+
+            TextArea {
+                  id : abcText
+                  anchors.centerIn : parent
+                  anchors.fill : parent
+                                    
+                  font.pointSize : 12
+                  backgroundVisible : false
+                  focus : true
+                  wrapMode : TextEdit.WrapAnywhere
+                  textFormat : TextEdit.PlainText
+	          //SL Changed from onPressed as in some circumstances the last key pressed was lost.
+                  Keys.onReleased : {
+                        if (event.key == Qt.Key_Escape) {
+                              window.close();
+                        } else {
+                              curScore.setMetaTag("comments", abcText.text)
+                        }
+                  }
+                  Component.onCompleted : {
+                        if (curScore)
+                              text = curScore.metaTag("comments")
+                  }
             }
+                  
             Component.onCompleted : {
-                if (curScore)
-                    text = curScore.metaTag("comments")
+                  if (curScore) {
+                        var metrics = settings.metrics;
+                        if (metrics) {
+                              metrics = JSON.parse(metrics);
+                              window.x = metrics.x;
+                              window.y = metrics.y;
+                              window.width = metrics.width;
+                              window.height = metrics.height;
+                        }
+                  }
             }
-        }
-        Component.onCompleted : {
+      }
+      onClosing : {
             if (curScore) {
-                var metrics = settings.metrics;
-                if (metrics) {
-                    metrics = JSON.parse(metrics);
-                    window.x = metrics.x;
-                    window.y = metrics.y;
-                    window.width = metrics.width;
-                    window.height = metrics.height;
-                }
-            }
-        }
-        onClosing : {
-            if (curScore) {
-                var metrics = {
-                    x : window.x,
-                    y : window.y,
-                    width : window.width,
-                    height : window.height
-                }
-                curScore.setMetaTag("comments", abcText.text)
-                settings.metrics = JSON.stringify(metrics);
+                  var metrics = {
+                        x : window.x,
+                        y : window.y,
+                        width : window.width,
+                        height : window.height
+                  }
+                  curScore.setMetaTag("comments", abcText.text)
+                  settings.metrics = JSON.stringify(metrics);
             }
             Qt.quit()
-        }
-	//Added onActiveChanged so we can test if the score has been changed.
-        onActiveChanged : {
+      }
+      //Added onActiveChanged so we can test if the score has been changed.
+      onActiveChanged : {
             if (active) {
-                if (score != curScore) {
-		    //Add new scorename to title
-                    window.title = "MuseScore : " + curScore.name;
-		    //Update the new score text
-                    abcText.text = curScore.metaTag("comments");
-		    //Now working on the new score
-                    score = curScore;
-                }
+                  if (score != curScore) {
+		        //Add new scorename to title
+                        window.title = "MuseScore : " + curScore.name;
+		        //Update the new score text
+                        abcText.text = curScore.metaTag("comments");
+		        //Now working on the new score
+                        score = curScore;
+                  }
             }
-        }
+      }
     }
 }
