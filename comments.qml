@@ -125,6 +125,7 @@ MuseScore {
                         window.title = "MuseScore : " + curScore.name;
 		        //Update the new score text
                         abcText.text = curScore.metaTag("comments");
+                        abcText.cursorPosition = abcText.text.length;
 		        //Now working on the new score
                         score = curScore;
                   }
