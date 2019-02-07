@@ -1,12 +1,12 @@
-import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick 2.9
+import QtQuick.Controls 1.5
 import QtQuick.Window 2.2
-import MuseScore 1.0
+import MuseScore 3.0
 import Qt.labs.settings 1.0
 
 MuseScore {
     menuPath : "Plugins.Comments"
-    version : "2.0"
+    version : "3.0"
     description : qsTr("This plugin adds comments to your score")
     //SL Removed plugin type as it's not really a dialog anymore and is causing two windows to be present on MAC
     //pluginType : "Dialog"
@@ -36,7 +36,7 @@ MuseScore {
 
         Settings {
             id : settings
-            category : "pluginSettings"
+            category : "plugin.comments.settings"
             property string metrics : ""
         }
 
@@ -56,14 +56,14 @@ MuseScore {
             anchors.left : window.left
             anchors.right : window.right
             anchors.bottom : window.bottom
-            
+
             anchors.fill : parent
 
             anchors.leftMargin : 5
             anchors.rightMargin : 5
             anchors.topMargin : textLabel.height + 5
             anchors.bottomMargin : 5
-            
+
             color : "lightgray"
             radius : 2
 
@@ -71,7 +71,7 @@ MuseScore {
                   id : abcText
                   anchors.centerIn : parent
                   anchors.fill : parent
-                                    
+
                   font.pointSize : 12
                   backgroundVisible : false
                   focus : true
@@ -90,7 +90,7 @@ MuseScore {
                               text = curScore.metaTag("comments")
                   }
             }
-                  
+
             Component.onCompleted : {
                   if (curScore) {
                         var metrics = settings.metrics;
