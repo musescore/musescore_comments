@@ -12,13 +12,25 @@ MuseScore {
     //pluginType : "Dialog"
     //requiresScore: true // needs MuseScore > 2.0.3
 
+    Component.onCompleted : {
+        if (mscoreMajorVersion >= 4) {
+           title = qsTr("Comments") ;
+           // thumbnailName = ".png";
+           // categoryCode = "some_category";
+           }
+       }
 
     onRun : {
+    
+        curScore.startCmd()
+        
         if (!curScore) {
-            Qt.quit();
+            quit();
         } else {
             window.visible = true
         }
+        
+        curScore.endCmd()
     }
 
     Window {
@@ -115,7 +127,7 @@ MuseScore {
                   curScore.setMetaTag("comments", abcText.text)
                   settings.metrics = JSON.stringify(metrics);
             }
-            Qt.quit()
+            quit()
       }
       //Added onActiveChanged so we can test if the score has been changed.
       onActiveChanged : {
