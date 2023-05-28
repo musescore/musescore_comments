@@ -12,13 +12,25 @@ MuseScore {
     //pluginType : "Dialog"
     //requiresScore: true // needs MuseScore > 2.0.3
 
+    Component.onCompleted : {
+        if (mscoreMajorVersion >= 4) {
+           title = qsTr("Comments") ;
+           // thumbnailName = ".png";
+           // categoryCode = "some_category";
+           }
+       }
 
     onRun : {
+    
+        curScore.startCmd()
+        
         if (!curScore) {
-            Qt.quit();
+            quit();
         } else {
             window.visible = true
         }
+        
+        curScore.endCmd()
     }
 
     Window {
@@ -32,7 +44,7 @@ MuseScore {
         property var score : curScore
 	//SL Added title so it is obvious which score the text will be added to
         title : {"MuseScore : " + curScore.name}
-        color : "silver"
+        color : "gray"
 
         Settings {
             id : settings
@@ -64,7 +76,7 @@ MuseScore {
             anchors.topMargin : textLabel.height + 5
             anchors.bottomMargin : 5
 
-            color : "lightgray"
+            color : "gray"
             radius : 2
 
             TextArea {
@@ -79,7 +91,7 @@ MuseScore {
                   textFormat : TextEdit.PlainText
 	          //SL Changed from onPressed as in some circumstances the last key pressed was lost.
                   Keys.onReleased : {
-                        if (event.key == Qt.Key_Escape) {
+                        if (event.key === Qt.Key_Escape) {
                               window.close();
                         } else {
                               curScore.setMetaTag("comments", abcText.text)
@@ -115,7 +127,7 @@ MuseScore {
                   curScore.setMetaTag("comments", abcText.text)
                   settings.metrics = JSON.stringify(metrics);
             }
-            Qt.quit()
+            quit()
       }
       //Added onActiveChanged so we can test if the score has been changed.
       onActiveChanged : {
