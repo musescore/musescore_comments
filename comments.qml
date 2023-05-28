@@ -44,7 +44,7 @@ MuseScore {
         property var score : curScore
 	//SL Added title so it is obvious which score the text will be added to
         title : {"MuseScore : " + curScore.name}
-        color : "silver"
+        color : "gray"
 
         Settings {
             id : settings
@@ -76,7 +76,7 @@ MuseScore {
             anchors.topMargin : textLabel.height + 5
             anchors.bottomMargin : 5
 
-            color : "lightgray"
+            color : "gray"
             radius : 2
 
             TextArea {
