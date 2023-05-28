@@ -91,7 +91,7 @@ MuseScore {
                   textFormat : TextEdit.PlainText
 	          //SL Changed from onPressed as in some circumstances the last key pressed was lost.
                   Keys.onReleased : {
-                        if (event.key == Qt.Key_Escape) {
+                        if (event.key === Qt.Key_Escape) {
                               window.close();
                         } else {
                               curScore.setMetaTag("comments", abcText.text)
